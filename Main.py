@@ -96,11 +96,6 @@ class InsertLambdaCommand(sublime_plugin.TextCommand):
 		for r in self.view.sel():
 			self.view.insert(edit, r.b, u"λ")
 
-# class InsertParenCommand(sublime_plugin.TextCommand):
-# 	def run(self, edit):
-# 		for r in self.view.sel():
-# 			self.view.insert(edit, r.b, ")")
-
 class InsertParenCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		for r in self.view.sel():
