@@ -1,0 +1,9 @@
+[
+    { "keys": ["alt+right"], "command": "move_sexp_right", "args": { "extend": false } },
+    { "keys": ["shift+alt+right"], "command": "move_sexp_right", "args": { "extend" : true } }, 
+    { "keys": ["alt+left"], "command": "move_sexp_left", "args": { "extend": false } }, 
+    { "keys": ["shift+alt+left"], "command": "move_sexp_left", "args": { "extend": true } },
+    { "keys": ["ctrl+\\"], "command": "convert_to_special_char" },
+    { "keys": ["super+\\"], "command": "insert_lambda" }, 
+    { "keys": [")"], "command": "insert_paren" }
+]
