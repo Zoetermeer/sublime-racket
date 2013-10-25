@@ -24,16 +24,21 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.source.racket</string>
+					<string>entity.name.variable.source.racket</string>
 				</dict>
 				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.source.racket</string>
+				</dict>
+				<key>3</key>
 				<dict>
 					<key>name</key>
 					<string>entity.name.variable.source.racket</string>
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>\((define)\s+([a-zA-Z0-9_\-?\+^]+)\s*</string>
+			<string>(\()(define)\s+([a-zA-Z0-9_\-?\+^]+)\s*</string>
 			<key>name</key>
 			<string>meta.variable.source.racket</string>
 		</dict>
@@ -43,16 +48,26 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.source.racket</string>
+					<string>entity.name.variable.source.racket</string>
 				</dict>
 				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.source.racket</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.variable.source.racket</string>
+				</dict>
+				<key>4</key>
 				<dict>
 					<key>name</key>
 					<string>entity.name.function.source.racket</string>
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>\((define)\s+\(([a-zA-Z0-9_\-?\+^]+)\s*</string>
+			<string>(\()(define)\s+(\()([a-zA-Z0-9_\-?\+^]+)\s*</string>
 			<key>name</key>
 			<string>meta.function.source.racket</string>
 		</dict>
@@ -62,18 +77,34 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.source.racket</string>
+					<string>entity.name.variable.source.racket</string>
 				</dict>
 				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.source.racket</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.variable.source.racket</string>
+				</dict>
+				<key>4</key>
 				<dict>
 					<key>name</key>
 					<string>entity.name.type.class.source.racket</string>
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>\((define-syntax)\s+\(([a-zA-Z0-9_\-?\+^]+)\s*</string>
+			<string>(\()(define-syntax)\s+(\()([a-zA-Z0-9_\-?\+^]+)\s*</string>
 			<key>name</key>
 			<string>meta.class.source.racket</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>(\(|\))</string>
+			<key>name</key>
+			<string>entity.name.variable.source.racket</string>
 		</dict>
 		<dict>
 			<key>captures</key>

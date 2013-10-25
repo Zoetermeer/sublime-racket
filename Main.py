@@ -113,10 +113,43 @@ class InsertParenCommand(sublime_plugin.TextCommand):
 			else:
 				self.view.insert(edit, r.b, ")")
 
+def scope_for_level(level):
+	if level == 0:
+		return "sexp.zero"
+	elif level == 1:
+		return "sexp.one"
+	elif level == 2:
+		return "sexp.two"
+	
+	return "sexp.three"
+
+class SExp(object):
+	def __init__(self):
+		self.level = None
+		self.start = None
+		self.end = None 
+		self.children = []
+
+def peek(ls):
+	sz = len(ls)
+	if sz == 0:
+		return None
+
+	return ls[sz - 1]
+
 class HighlightSExp(sublime_plugin.EventListener):
 	def on_selection_modified(self, view):
-		view.erase_regions("ParenHighlight")
+		view.erase_regions("ParenHighlight0")
+		view.erase_regions("ParenHighlight1")
+		view.erase_regions("ParenHighlight2")
+		view.erase_regions("ParenHighlight3")
+		view.erase_regions("ParenHighlight4")
 		regions = []
+		zeros = []
+		ones = []
+		twos = []
+		threes = []
+		fours = []
 		for r in view.sel():
 			forward = False
 			if r.b == 0:
@@ -146,25 +179,87 @@ class HighlightSExp(sublime_plugin.EventListener):
 				incrs = closes
 				decrs = opens
 
-			matching_brace_pos = find_scope_delim_pos2(
-				text, 
-				incrs,
-				decrs,
-				r.b,
-				acc,
-				terminate_at_level = 0,
-				level = 0)
+
+			size = len(text)
+			lvl = 0
+			p = r.b
+			matching_brace_pos = None
+			in_str = False
+			start_pos_stack = []
+			root = None
+			exp_stack = []
+			for i in range(0, size):
+				cur = text[i]
+				if cur == '\"':
+					if in_str:
+						in_str = False
+					else:
+						in_str = True
+
+				if not in_str:
+					if matches(cur, incrs):
+						lvl = lvl + 1
+						new_sexp = SExp()
+						new_sexp.level = lvl
+						new_sexp.start = p 
+
+						if root == None:
+							root = new_sexp
+							exp_stack.append(new_sexp)
+						else:
+							top = peek(exp_stack)
+							top.children.append(new_sexp)
+
+						exp_stack.append(new_sexp)
+					elif matches(cur, decrs):
+						lvl = lvl - 1
+						ended_sexp = exp_stack.pop()
+						ended_sexp.end = acc(p) 
+						if lvl == 0:
+							matching_brace_pos = ended_sexp.end
+							break
+					
+				p = acc(p)
 
 			if matching_brace_pos == None:
 				continue
 
-			start = matching_brace_pos + 1
-			if not forward:
-				start = matching_brace_pos - 1
-			end = r.b
-			regions.append(sublime.Region(start, end))
+			#Starting at the root, subdivide each node's region 
+			#into a list of regions so it doesn't overlap with 
+			#its children.  Sublime doesn't appear to be able 
+			#to color overlapping regions differently.
+			def add_reg(rg, lv):
+				if lv == 0:
+					zeros.append(rg)
+				elif lv == 1:
+					ones.append(rg)
+				elif lv == 2:
+					twos.append(rg)
+				elif lv == 3:
+					threes.append(rg)
+				else:
+					fours.append(rg)
 
-		view.add_regions("ParenHighlight", regions, "comment")
+			def add_sexp_reg(sexp):
+				reg = sublime.Region(sexp.start, sexp.end)
+				add_reg(reg, sexp.level)
+
+			def subdivide(node):
+				if len(node.children) == 0:
+					add_sexp_reg(node)
+				else:
+					st = node.start 
+					for c in node.children:
+						add_reg(sublime.Region(st, c.start), node.level)
+						subdivide(c)
+						st = c.end
+					add_reg(sublime.Region(peek(node.children).end, node.end), node.level)
+
+			subdivide(root)
+			view.add_regions("ParenHighlight1", ones, "sexp.one")
+			view.add_regions("ParenHighlight2", twos, "sexp.two")
+			view.add_regions("ParenHighlight3", threes, "sexp.three")
+			view.add_regions("ParenHighlight4", fours, "sexp.four")
 
 
 
