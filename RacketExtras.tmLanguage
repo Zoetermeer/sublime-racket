@@ -92,7 +92,7 @@
 				<key>4</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name.type.class.source.racket</string>
+					<string>entity.name.type.class.type.source.racket</string>
 				</dict>
 			</dict>
 			<key>match</key>
