@@ -157,6 +157,21 @@ class InsertFrownieCommand(sublime_plugin.TextCommand):
 class InsertParenCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		for r in self.view.sel():
+			self.view.insert(edit, r.b, "(")
+
+class InsertBracketCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		for r in self.view.sel():
+			self.view.insert(edit, r.b, "[")
+
+class InsertQuoteCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		for r in self.view.sel():	
+			self.view.insert(edit, r.b, "'")
+
+class InsertCloseParenCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		for r in self.view.sel():
 			matching_brace_pos = find_scope_delim_pos2(
 				self.view.substr(sublime.Region(r.b, 0))[::-1], 
 				")]",

@@ -1,0 +1,12 @@
+{
+	"cmd": ["raco", "make", "$file"], 
+	"file_regex": "^(...*?):([0-9]*):?([0-9]*)",
+	"path": "/Users/jamesswaine/plt-diss/racket/bin/", 
+	"variants": [
+		{
+			"cmd": ["racket", "$file"], 
+			"path": "/Users/jamesswaine/plt-diss/racket/bin", 
+			"name": "Run"
+		}
+	]
+}
